@@ -1,0 +1,26 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "tobiasbu's blog",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run clean && npx @11ty/eleventy --serve",
+    "clean": "rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobiasbu/blog.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "Tobias Ulrich",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/tobiasbu/blog/issues"
+  },
+  "homepage": "https://github.com/tobiasbu/blog#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

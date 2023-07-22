@@ -1,0 +1,23 @@
+---
+layout: base.njk
+pagination:
+  data: collections.posts
+  alias: posts
+  size: 10
+---
+
+<main>
+    <ul class="post-list" aria-label="articles/posts by date, newest first">
+
+        {% for post in posts %}
+
+        <li>
+          <a href="{{ post.url | url }}">{{ post.data.title }}</a>
+        </li>
+
+        <time datetime="{{ post.data.date | html_date }}">{{ post.data.date | readable_date }}</time>
+
+        {% endfor %}
+
+    </ul>
+</main>
