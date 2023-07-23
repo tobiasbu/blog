@@ -4,11 +4,7 @@ const Nunjucks = require("nunjucks");
 const SRC_DIR = __dirname;
 const INPUT_DIR = `${SRC_DIR}/pages`;
 
-
-// console.log(`Running from ${SRC_DIR}`)
-
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addWatchTarget("css");
   eleventyConfig.addWatchTarget("posts");
 
@@ -46,7 +42,7 @@ module.exports = function (eleventyConfig) {
   return {
     dir: {
       input: ".",
-      output: "dist",
+      output: "_site",
       includes: 'includes',
       layouts: "layouts",
       htmlTemplateEngine: "njk",
