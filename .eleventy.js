@@ -1,20 +1,35 @@
-const path = require("path")
-const Nunjucks = require("nunjucks");
+const fs = require("fs");
+const path = require("path");
+
+const postcss = require("postcss");
+const atImport = require("postcss-import")
+const autoprefixer = require("autoprefixer");
 
 const SRC_DIR = __dirname;
-const INPUT_DIR = `${SRC_DIR}/pages`;
+const OUT_DIR = `${SRC_DIR}/_site`;
 
 module.exports = function (eleventyConfig) {
+  // disables layout resolution to improve build performance
+  eleventyConfig.setLayoutResolution(false);
+
+  // watch folders
   eleventyConfig.addWatchTarget("css");
   eleventyConfig.addWatchTarget("posts");
 
   // add posts collection
-  eleventyConfig.addCollection("posts", function(collection) {
+  eleventyConfig.addCollection("posts", function (collection) {
     return collection.getFilteredByGlob("./posts/**/*.md");
   });
 
-  // disables layout resolution to improve build performance
-  eleventyConfig.setLayoutResolution(false);
+  // Filters
+  // Relative path
+  eleventyConfig.addFilter(
+    "relative",
+    (page) => {
+      return `${path.relative(path.dirname(page.outputPath), OUT_DIR)}/`
+    }
+  );
+
 
   // adds filter for human dates
   eleventyConfig.addFilter("html_date", dateObj => {
@@ -24,8 +39,8 @@ module.exports = function (eleventyConfig) {
     const day = String(date.getDate()).padStart(2, '0');
     const hour = String(date.getHours() + 1).padStart(2, '0');
     const minute = String(date.getMinutes()).padStart(2, '0');
-  
-    return `${year}-${month}-${day} ${hour}:${minute}`; 
+
+    return `${year}-${month}-${day} ${hour}:${minute}`;
   });
 
   // adds filter for HTML tag <time datetime="..." /> 
@@ -34,19 +49,58 @@ module.exports = function (eleventyConfig) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-  
-    return `${year}-${month}-${day}`; 
+
+    return `${year}-${month}-${day}`;
   });
+
+  // PostCSS
+  // Run PostCSS (insert css to html later)
+  // Source https://equk.co.uk/2023/06/29/11ty-postcss-integration-optimized/
+  eleventyConfig.on('eleventy.before', async () => {
+    const cssInputDir = `${SRC_DIR}/css/main.css`
+    const cssInput = fs.readFileSync(cssInputDir, {
+      encoding: 'utf-8',
+    })
+    const cssOutDir = `${OUT_DIR}/`
+    const cssOutFile = 'styles.css'
+    const cssOutput = cssOutDir + cssOutFile
+    if (!fs.existsSync(cssOutDir)) {
+      fs.mkdirSync(cssOutDir, { recursive: true })
+    }
+    const minified = await postcss([autoprefixer()])
+      .use(atImport())
+      .process(cssInput, { from: cssInputDir })
+      .then((r) => {
+        fs.writeFile(cssOutput, r.css, (err) => {
+          if (err) throw err
+          console.log(`[11ty] Writing PostCSS Output: ${cssOutput}`)
+        })
+      })
+    return minified
+  })
+
+  // PostCSS transform
+  //  eleventyConfig.addTransform('postcss', function (content) {
+  //   if (this.page.outputPath && this.page.outputPath.endsWith('.html')) {
+  //     const minCSS = fs.readFileSync('src/_assets/css/styles.css', {
+  //       encoding: 'utf-8',
+  //     })
+  //     content = content.replace('</head>', `<style>${minCSS}</style></head>`)
+  //   }
+  //   return content
+  // })
+
 
 
   return {
     dir: {
       input: ".",
-      output: "_site",
+      output: OUT_DIR,
       includes: 'includes',
       layouts: "layouts",
+      data: "data",
       htmlTemplateEngine: "njk",
       markdownTemplateEngine: "njk"
-    }
+    },
   }
 } 

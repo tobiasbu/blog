@@ -4,7 +4,15 @@
   {% include 'head.njk' %}
 
   <body>
+    <div class="wrapper">
+
+    <header>
+      <h1>{{ meta.title }}</h1>
+    </header>
+
     {{ content | safe }}
+
+    </div>
   </body>
 
 </html>
