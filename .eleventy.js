@@ -26,7 +26,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter(
     "relative",
     (page) => {
-      return `${path.relative(path.dirname(page.outputPath), OUT_DIR)}/`
+      let relative = path.relative(path.dirname(page.outputPath), OUT_DIR);
+      if (relative.length === 0) {
+        return "./"
+      }
+      return `${relative}/`
     }
   );
 
