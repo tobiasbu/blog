@@ -7,7 +7,10 @@ const autoprefixer = require("autoprefixer");
 
 const SRC_DIR = __dirname;
 const OUT_DIR = `${SRC_DIR}/_site`;
+const IS_DEV = process.env.NODE_ENV === "development"
 
+/** @typedef {import("@11ty/eleventy").UserConfig} UserConfig */
+/** @param {UserConfig} eleventyConfig */
 module.exports = function (eleventyConfig) {
   // disables layout resolution to improve build performance
   eleventyConfig.setLayoutResolution(false);
@@ -94,9 +97,8 @@ module.exports = function (eleventyConfig) {
   //   return content
   // })
 
-
-
   return {
+    pathPrefix: IS_DEV ? "" : "/blog/",
     dir: {
       input: ".",
       output: OUT_DIR,
@@ -104,7 +106,7 @@ module.exports = function (eleventyConfig) {
       layouts: "layouts",
       data: "data",
       htmlTemplateEngine: "njk",
-      markdownTemplateEngine: "njk"
+      markdownTemplateEngine: "njk", 
     },
   }
 } 

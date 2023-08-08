@@ -6,7 +6,7 @@ setup:
 	@npm install
 
 run: clean
-	@npx @11ty/eleventy --serve
+	@NODE_ENV=development npx @11ty/eleventy --serve
 
 build: clean
 	@npx @11ty/eleventy
