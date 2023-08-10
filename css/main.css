@@ -1,5 +1,121 @@
 
-@import "normalize.css";
+:root {
+  /* COLORS */
+  --tbu-bg: #35332c;
+  --tbu-bg-content: #E4D3A8;
+  --tbu-accent: #C13A15;
+  --tbu-accent-light: #F07510;
+  --tbu-text: #551909;
+  --tbu-gray: #555043;
+  /* FONT SIZE */
+  --tbu-line-height: 1.5;
+  --tbu-font-size-xs: 0.6rem;
+  --tbu-font-size-s: 0.762rem;
+  --tbu-font-size: 1rem;
+  --tbu-font-size-m: 1.5rem;
+  /* MEDIA QUERIES */
+  --tbu-view-large: 32rem;
+  /* SPACING */
+  --tbu-spacing-s: 0.8rem;
+  --tbu-spacing: 1rem;
+  --tbu-spacing-m: 1.5rem;
+}
 
-@import "root.css";
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: none;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 21px;
+  line-height: var(--tbu-line-height);
+}
 
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  height: inherit;
+  background: var(--tbu-bg);
+  color: var(--tbu-text);
+}
+
+main {
+  display: block;
+}
+
+h1 {
+  font-size: var(--tbu-font-size-m);
+  font-weight: 500;
+  margin: 0;
+}
+
+header {
+  margin-bottom: var(--tbu-spacing-m);
+}
+
+header h1 {
+  font-size: var(--tbu-font-size-s);
+  font-weight: 600;
+}
+
+header a {
+  color: var(--tbu-text);
+}
+
+header a:hover {
+  color: var(--tbu-accent);
+}
+
+p {
+  margin: var(--tbu-spacing-s) 0;
+}
+
+a {
+  color: var(--tbu-accent);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: var(--tbu-accent-light);
+}
+
+ul, ol {
+  margin: var(--tbu-spacing) 0;
+  padding-left: var(--tbu-spacing);
+}
+
+li {
+  margin-bottom: var(--tbu-font-size-xs);
+}
+
+img {
+  border-style: none;
+}
+
+time {
+  display: block;
+  font-size: var(--tbu-font-size-xs);
+  line-height: var(--tbu-font-size-xs);
+  color: var(--tbu-gray)
+}
+
+[hidden] {
+  display: none;
+}
+
+/* WRAPPER */
+.wrapper {
+  box-sizing: border-box;
+  max-width: var(--tbu-view-large);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: var(--tbu-spacing);
+  background-color: var(--tbu-bg-content);
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  font-size: var(--tbu-font-size);
+}

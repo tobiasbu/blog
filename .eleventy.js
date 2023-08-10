@@ -2,12 +2,15 @@ const fs = require("fs");
 const path = require("path");
 
 const postcss = require("postcss");
-const atImport = require("postcss-import")
+// const postcssImport = require("postcss-import")
+// const postcssNested = require("postcss-nested")
 const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
 
+const IS_DEV = process.env.NODE_ENV === "development"
 const SRC_DIR = __dirname;
 const OUT_DIR = `${SRC_DIR}/_site`;
-const IS_DEV = process.env.NODE_ENV === "development"
+
 
 /** @typedef {import("@11ty/eleventy").UserConfig} UserConfig */
 /** @param {UserConfig} eleventyConfig */
@@ -37,17 +40,16 @@ module.exports = function (eleventyConfig) {
     }
   );
 
-
   // adds filter for human dates
   eleventyConfig.addFilter("html_date", dateObj => {
     const date = new Date(dateObj);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    const hour = String(date.getHours() + 1).padStart(2, '0');
-    const minute = String(date.getMinutes()).padStart(2, '0');
+    // const hour = String(date.getHours() + 1).padStart(2, '0');
+    // const minute = String(date.getMinutes()).padStart(2, '0');
 
-    return `${year}-${month}-${day} ${hour}:${minute}`;
+    return `${year}-${month}-${day}`;
   });
 
   // adds filter for HTML tag <time datetime="..." /> 
@@ -57,7 +59,7 @@ module.exports = function (eleventyConfig) {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
+    return `${month}/${day}/${year}`;
   });
 
   // PostCSS
@@ -74,8 +76,12 @@ module.exports = function (eleventyConfig) {
     if (!fs.existsSync(cssOutDir)) {
       fs.mkdirSync(cssOutDir, { recursive: true })
     }
-    const minified = await postcss([autoprefixer()])
-      .use(atImport())
+    const minified = await postcss([
+      autoprefixer(),
+      // postcssNested(),
+      // postcssImport(),
+      cssnano()
+    ])
       .process(cssInput, { from: cssInputDir })
       .then((r) => {
         fs.writeFile(cssOutput, r.css, (err) => {

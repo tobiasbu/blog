@@ -2,6 +2,8 @@
 ROOT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 BUILD_DIR := ${ROOT_DIR}/_site
 
+install: setup
+
 setup:
 	@npm install
 

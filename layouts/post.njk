@@ -2,8 +2,7 @@
 layout: base.njk
 ---
 <article>
-  <h2>{{ title }}</h2>
-  <time datetime="{{ page.date | html_date }}">{{ page.date | readable_date }}</time>
-
+  <time datetime="{{ page.date | html_date }}" itemprop="datePublished">{{ page.date | readable_date }}</time>
+  <h1>{{ title }}</h1>
   {{ content | safe }}
 </article>
