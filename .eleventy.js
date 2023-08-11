@@ -11,6 +11,7 @@ const IS_DEV = process.env.NODE_ENV === "development"
 const SRC_DIR = __dirname;
 const OUT_DIR = `${SRC_DIR}/_site`;
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /** @typedef {import("@11ty/eleventy").UserConfig} UserConfig */
 /** @param {UserConfig} eleventyConfig */
@@ -56,10 +57,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("readable_date", dateObj => {
     const date = new Date(dateObj);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.getMonth();
+    const day = date.getDate();
 
-    return `${month}/${day}/${year}`;
+    return `${day} ${months[month]}, ${year}`;
   });
 
   // PostCSS
